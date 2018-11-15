@@ -1,0 +1,14 @@
+{
+    "name": "scaleplan/enum-setter",
+    "description": "Set enum types in PostgreSQL from PHP constants",
+    "autoload": {
+        "psr-4": {
+            "Scaleplan\\EnumSetter\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=7.0",
+        "haydenpierce/class-finder": "dev-master"
+        
+    }
+}
