@@ -1,0 +1,5 @@
+database:
+    dns: pgsql:host=/var/run/postgresql;port=5432;dbname=main
+    user: user
+    password: password
+    default_schema: public
