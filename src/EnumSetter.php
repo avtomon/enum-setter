@@ -93,17 +93,11 @@ class EnumSetter
 
         foreach ($newValues as $index => $newValue) {
             if (isset($oldValues[$index])) {
-                $statement = $this->connection->prepare(
-                    "ALTER TYPE $enumName RENAME VALUE :old_value TO :new_value"
-                );
-                $statement->execute(['old_value' => $oldValues[$index], 'new_value' => $newValue]);
+                $this->connection->exec("ALTER TYPE $enumName RENAME VALUE {$oldValues[$index]} TO $newValue");
                 continue;
             }
 
-            $statement = $this->connection->prepare(
-                "ALTER TYPE $enumName ADD VALUE IF NOT EXISTS :new_value"
-            );
-            $statement->execute(['new_value' => $newValue]);
+            $this->connection->exec("ALTER TYPE $enumName ADD VALUE IF NOT EXISTS $newValue");
         }
     }
 }
