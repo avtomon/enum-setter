@@ -2,8 +2,6 @@
 
 namespace Scaleplan\EnumSetter;
 
-use HaydenPierce\ClassFinder\ClassFinder;
-
 /**
  * Class EnumSetter
  *
@@ -49,7 +47,7 @@ class EnumSetter
     public function applyTypes(string $directory, string $constNamespace) : void
     {
         try {
-            $files = \scandir($directory);
+            $files = \scandir($directory, SCANDIR_SORT_NONE);
         } catch (\Throwable $e) {
             throw new DirectoryScanExceptions(DirectoryScanExceptions::MESSAGE . ' :' . $e->getMessage());
         }
@@ -60,10 +58,10 @@ class EnumSetter
             }
 
             $enum = $constNamespace . '\\' . str_ireplace('.php', '', $fileName);
-            if (!interface_exists($enum)
-                && class_exists($enum)
-                && !defined($enum . '::' . static::ENUM_TYPE_NAME_CONST_NAME)
+            if (!defined($enum . '::' . static::ENUM_TYPE_NAME_CONST_NAME)
                 && !defined($enum . '::' . static::ENUM_VALUES_CONST_NAME)
+                && !interface_exists($enum)
+                && class_exists($enum)
             ) {
                 continue;
             }
