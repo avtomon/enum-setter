@@ -32,7 +32,7 @@ final class ConnectionStructure
     /**
      * @return string
      */
-    public function getDns() : \string
+    public function getDns() : string
     {
         return $this->dns;
     }
@@ -40,7 +40,7 @@ final class ConnectionStructure
     /**
      * @param string $dns
      */
-    public function setDns(\string $dns) : void
+    public function setDns(string $dns) : void
     {
         $this->dns = $dns;
     }
@@ -48,7 +48,7 @@ final class ConnectionStructure
     /**
      * @return string
      */
-    public function getUser() : \string
+    public function getUser() : string
     {
         return $this->user;
     }
@@ -56,7 +56,7 @@ final class ConnectionStructure
     /**
      * @param string $user
      */
-    public function setUser(\string $user) : void
+    public function setUser(string $user) : void
     {
         $this->user = $user;
     }
@@ -64,7 +64,7 @@ final class ConnectionStructure
     /**
      * @return string
      */
-    public function getPassword() : \string
+    public function getPassword() : string
     {
         return $this->password;
     }
@@ -72,7 +72,7 @@ final class ConnectionStructure
     /**
      * @param string $password
      */
-    public function setPassword(\string $password) : void
+    public function setPassword(string $password) : void
     {
         $this->password = $password;
     }
@@ -80,7 +80,7 @@ final class ConnectionStructure
     /**
      * @return string
      */
-    public function getDefaultSchema() : \string
+    public function getDefaultSchema() : string
     {
         return $this->defaultSchema;
     }
@@ -88,7 +88,7 @@ final class ConnectionStructure
     /**
      * @param string $defaultSchema
      */
-    public function setDefaultSchema(\string $defaultSchema) : void
+    public function setDefaultSchema(string $defaultSchema) : void
     {
         $this->defaultSchema = $defaultSchema;
     }
