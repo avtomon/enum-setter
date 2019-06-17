@@ -10,4 +10,5 @@ namespace Scaleplan\EnumSetter;
 class DirectoryScanExceptions extends EnumSetterException
 {
     public const MESSAGE = 'Directory scan error';
+    public const CODE = 523;
 }
