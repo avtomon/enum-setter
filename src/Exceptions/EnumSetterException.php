@@ -1,6 +1,6 @@
 <?php
 
-namespace Scaleplan\EnumSetter;
+namespace Scaleplan\EnumSetter\Exceptions;
 
 /**
  * Class EnumSetterException

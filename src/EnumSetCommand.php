@@ -3,6 +3,7 @@
 namespace Scaleplan\EnumSetter;
 
 use Scaleplan\Console\AbstractCommand;
+use Scaleplan\EnumSetter\Exceptions\FilesReadingException;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -32,13 +33,13 @@ class EnumSetCommand extends AbstractCommand
         $connectionStructure->setDns($config['dns'] ?? null);
         $connectionStructure->setUser($config['user'] ?? null);
         $connectionStructure->setPassword($config['password'] ?? null);
-        $connectionStructure->setDefaultSchema($config['default_config'] ?? null);
+        $connectionStructure->setDefaultSchema($config['default_schema'] ?? null);
 
         $this->enumSetter = new EnumSetter($connectionStructure);
     }
 
     /**
-     * @throws DirectoryScanExceptions
+     * @throws FilesReadingException
      * @throws \Scaleplan\Console\Exceptions\CommandArgumentNotDefined
      */
     public function run() : void

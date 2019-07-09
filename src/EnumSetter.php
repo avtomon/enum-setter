@@ -2,6 +2,8 @@
 
 namespace Scaleplan\EnumSetter;
 
+use Scaleplan\EnumSetter\Exceptions\FilesReadingException;
+
 /**
  * Class EnumSetter
  *
@@ -39,17 +41,21 @@ class EnumSetter
     }
 
     /**
-     * @param string $directory
+     * @param string $directoryOrFile
      * @param string $constNamespace
      *
-     * @throws DirectoryScanExceptions
+     * @throws FilesReadingException
      */
-    public function applyTypes(string $directory, string $constNamespace) : void
+    public function applyTypes(string $directoryOrFile, string $constNamespace) : void
     {
         try {
-            $files = \scandir($directory, SCANDIR_SORT_NONE);
+            if (\is_dir($directoryOrFile)) {
+                $files = \scandir($directoryOrFile, SCANDIR_SORT_NONE);
+            } else {
+                $files = [$directoryOrFile];
+            }
         } catch (\Throwable $e) {
-            throw new DirectoryScanExceptions(DirectoryScanExceptions::MESSAGE . ' :' . $e->getMessage());
+            throw new FilesReadingException(FilesReadingException::MESSAGE . ': ' . $e->getMessage());
         }
 
         foreach ($files as $fileName) {
@@ -57,7 +63,7 @@ class EnumSetter
                 continue;
             }
 
-            $enum = $constNamespace . '\\' . str_ireplace('.php', '', $fileName);
+            $enum = "\\$constNamespace\\" . str_ireplace('.php', '', $fileName);
             if (!defined($enum . '::' . static::ENUM_TYPE_NAME_CONST_NAME)
                 && !defined($enum . '::' . static::ENUM_VALUES_CONST_NAME)
                 && !interface_exists($enum)
@@ -66,12 +72,12 @@ class EnumSetter
                 continue;
             }
 
-            $all = $enum::{static::ENUM_VALUES_CONST_NAME};
+            $all = \constant($enum . '::' . static::ENUM_VALUES_CONST_NAME);
             if (!\is_array($all) && !count($all)) {
                 continue;
             }
 
-            $this->applyType($all, $enum);
+            $this->applyType($all, \constant($enum . '::' . static::ENUM_TYPE_NAME_CONST_NAME));
         }
     }
 
@@ -86,16 +92,12 @@ class EnumSetter
         }
 
         $oldValues = $this->connection
-            ->query("SELECT unnest(enum_range(NULL::$enumName))")
-            ->fetchAll(\PDO::FETCH_OBJ);
+            ->query("SELECT to_json(enum_range(NULL::$enumName)) AS enum")
+            ->fetchAll();
 
-        foreach ($newValues as $index => $newValue) {
-            if (isset($oldValues[$index])) {
-                $this->connection->exec("ALTER TYPE $enumName RENAME VALUE {$oldValues[$index]} TO $newValue");
-                continue;
-            }
-
-            $this->connection->exec("ALTER TYPE $enumName ADD VALUE IF NOT EXISTS $newValue");
+        $oldValues = \json_decode($oldValues[0]['enum'], false);
+        foreach (array_diff($newValues, $oldValues) as $index => $newValue) {
+            $this->connection->exec("ALTER TYPE $enumName ADD VALUE IF NOT EXISTS '$newValue'");
         }
     }
 }
