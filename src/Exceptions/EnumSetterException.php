@@ -9,7 +9,7 @@ namespace Scaleplan\EnumSetter\Exceptions;
  */
 class EnumSetterException extends \Exception
 {
-    public const MESSAGE = 'Enum setter error.';
+    public const MESSAGE = 'Ошибка установки ENUM-значений.';
     public const CODE = 500;
 
     /**
