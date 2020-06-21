@@ -9,6 +9,6 @@ namespace Scaleplan\EnumSetter\Exceptions;
  */
 class FilesReadingException extends EnumSetterException
 {
-    public const MESSAGE = 'Ошибка чтения файла.';
+    public const MESSAGE = 'enum-setter.file-read-error';
     public const CODE = 523;
 }
