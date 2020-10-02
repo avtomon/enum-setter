@@ -23,11 +23,19 @@ class EnumSetCommand extends AbstractCommand
     /**
      * EnumSetCommand constructor.
      *
+     * @param array $arguments
+     *
+     * @throws \ReflectionException
      * @throws \Scaleplan\Console\Exceptions\CommandSignatureIsEmptyException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ContainerTypeNotSupportingException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\DependencyInjectionException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ParameterMustBeInterfaceNameOrClassNameException
+     * @throws \Scaleplan\DependencyInjection\Exceptions\ReturnTypeMustImplementsInterfaceException
      */
-    public function __construct()
+    public function __construct(array $arguments)
     {
-        parent::__construct();
+        parent::__construct($arguments);
+
         $config = Yaml::parseFile(dirname(__DIR__) . '/config.yml');
         $connectionStructure = new ConnectionStructure();
         $connectionStructure->setDns($config['dns'] ?? null);
